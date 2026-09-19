@@ -1,4 +1,5 @@
 import "./App.css";
+import { useState } from "react";
 import type { CSSProperties } from "react";
 import illustration_signup_desktop from "./assets/illustration-sign-up-desktop.svg";
 import illustration_signup_tablet from "./assets/illustration-sign-up-tablet.svg";
@@ -6,13 +7,30 @@ import illustration_signup_mobile from "./assets/illustration-sign-up-mobile.svg
 
 import Form_component from "./components/Form_component";
 import Text_component from "./components/Text_component";
+import Successfull_component from "./components/Successfull_component";
 function App() {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
+
+  const handleSubscribe = (email: string) => {
+    setSubmittedEmail(email);
+    setIsSubscribed(true);
+  };
+
   return (
     <>
-      <div className="flex md:flex-row bg-white md:rounded-3xl md:w-4xl flex-col-reverse">
+      {isSubscribed ? (
+        <Successfull_component
+          email={submittedEmail}
+          onDismiss={() => setIsSubscribed(false)}
+        />
+      ) : null}
+      <div
+        className={`${isSubscribed ? "hidden" : ""} first flex md:flex-row bg-white md:rounded-3xl md:w-4xl flex-col-reverse`}
+      >
         <div className="flex flex-col md:justify-center md:w-full">
           <Text_component />
-          <Form_component />
+          <Form_component onSubmit={handleSubscribe} />
         </div>
         <div
           style={
